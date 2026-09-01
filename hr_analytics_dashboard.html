@@ -1,0 +1,1063 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Analytics Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: "Segoe UI", Arial, sans-serif;
+    background: #F4F7FB;
+    color: #1F2937;
+}
+
+.header {
+    background: linear-gradient(135deg, #182848, #2B5876);
+    color: white;
+    padding: 28px 40px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.12);
+}
+
+.header-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title-section {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.logo {
+    width: 58px;
+    height: 58px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+}
+
+.header h1 {
+    font-size: 28px;
+}
+
+.header p {
+    margin-top: 5px;
+    color: #DCE6F2;
+}
+
+.header-badge {
+    background: rgba(255,255,255,0.15);
+    padding: 10px 16px;
+    border-radius: 25px;
+    font-size: 14px;
+}
+
+.container {
+    max-width: 1500px;
+    margin: auto;
+    padding: 30px;
+}
+
+.filter-panel {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+    margin-bottom: 28px;
+}
+
+.filter-title {
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.filters {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+}
+
+.filter-group label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 7px;
+    color: #4B5563;
+}
+
+select {
+    width: 100%;
+    padding: 11px 12px;
+    border: 1px solid #D1D5DB;
+    border-radius: 10px;
+    background: #FAFAFA;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+select:focus {
+    outline: none;
+    border-color: #2B5876;
+}
+
+.reset-btn {
+    background: #2B5876;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+    align-self: end;
+}
+
+.reset-btn:hover {
+    background: #182848;
+}
+
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.kpi-card {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 5px 18px rgba(0,0,0,0.07);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: 0.25s;
+}
+
+.kpi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.kpi-text h3 {
+    font-size: 13px;
+    color: #6B7280;
+    margin-bottom: 9px;
+}
+
+.kpi-text h2 {
+    font-size: 25px;
+    color: #1F2937;
+}
+
+.kpi-icon {
+    width: 55px;
+    height: 55px;
+    border-radius: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 26px;
+}
+
+.icon-blue {
+    background: #E6F0FF;
+}
+
+.icon-red {
+    background: #FDEBEC;
+}
+
+.icon-green {
+    background: #E8F7EE;
+}
+
+.icon-purple {
+    background: #F1EBFF;
+}
+
+.chart-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px;
+    margin-bottom: 25px;
+}
+
+.chart-card {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+}
+
+.chart-card h3 {
+    font-size: 17px;
+    margin-bottom: 20px;
+}
+
+.chart-container {
+    position: relative;
+    height: 330px;
+}
+
+.full-chart {
+    grid-column: span 2;
+}
+
+.table-card {
+    background: white;
+    padding: 22px;
+    border-radius: 18px;
+    box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+    margin-top: 25px;
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 900px;
+}
+
+th {
+    background: #F3F6FA;
+    color: #4B5563;
+    text-align: left;
+    padding: 13px;
+    font-size: 13px;
+}
+
+td {
+    padding: 13px;
+    border-bottom: 1px solid #EEF0F3;
+    font-size: 13px;
+}
+
+tr:hover {
+    background: #FAFBFD;
+}
+
+.badge {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.attrition-yes {
+    background: #FDEBEC;
+    color: #C0392B;
+}
+
+.attrition-no {
+    background: #E8F7EE;
+    color: #1E8449;
+}
+
+.footer {
+    text-align: center;
+    color: #6B7280;
+    padding: 30px 0 10px;
+    font-size: 13px;
+}
+
+@media(max-width: 900px) {
+    .chart-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-chart {
+        grid-column: span 1;
+    }
+
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="header">
+    <div class="header-content">
+        <div class="title-section">
+            <div class="logo">👥</div>
+            <div>
+                <h1>HR Analytics Dashboard</h1>
+                <p>Workforce Insights • Employee Performance • Attrition Analysis</p>
+            </div>
+        </div>
+
+        <div class="header-badge">
+            📊 Interactive HR Insights
+        </div>
+    </div>
+</div>
+
+<div class="container">
+
+<div class="filter-panel">
+    <div class="filter-title">🔎 Filter Employee Data</div>
+
+    <div class="filters">
+
+        <div class="filter-group">
+            <label>🏢 Department</label>
+            <select id="departmentFilter">
+                <option value="All">All Departments</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>💼 Job Role</label>
+            <select id="roleFilter">
+                <option value="All">All Job Roles</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>👤 Gender</label>
+            <select id="genderFilter">
+                <option value="All">All Genders</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>🚪 Attrition</label>
+            <select id="attritionFilter">
+                <option value="All">All Employees</option>
+                <option value="Yes">Attrition: Yes</option>
+                <option value="No">Attrition: No</option>
+            </select>
+        </div>
+
+        <div class="filter-group">
+            <label>⏰ Overtime</label>
+            <select id="overtimeFilter">
+                <option value="All">All</option>
+            </select>
+        </div>
+
+        <button class="reset-btn" onclick="resetFilters()">
+            🔄 Reset Filters
+        </button>
+
+    </div>
+</div>
+
+<div class="kpi-grid">
+
+    <div class="kpi-card">
+        <div class="kpi-text">
+            <h3>👥 TOTAL EMPLOYEES</h3>
+            <h2 id="totalEmployees">0</h2>
+        </div>
+        <div class="kpi-icon icon-blue">👥</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-text">
+            <h3>🚪 ATTRITION RATE</h3>
+            <h2 id="attritionRate">0%</h2>
+        </div>
+        <div class="kpi-icon icon-red">📉</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-text">
+            <h3>💰 AVG MONTHLY INCOME</h3>
+            <h2 id="avgIncome">0</h2>
+        </div>
+        <div class="kpi-icon icon-green">💰</div>
+    </div>
+
+    <div class="kpi-card">
+        <div class="kpi-text">
+            <h3>⭐ AVG JOB SATISFACTION</h3>
+            <h2 id="avgSatisfaction">0</h2>
+        </div>
+        <div class="kpi-icon icon-purple">⭐</div>
+    </div>
+
+</div>
+
+<div class="chart-grid">
+
+    <div class="chart-card">
+        <h3>🏢 Employees by Department</h3>
+        <div class="chart-container">
+            <canvas id="departmentChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>🚪 Attrition Overview</h3>
+        <div class="chart-container">
+            <canvas id="attritionChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>👤 Workforce by Gender</h3>
+        <div class="chart-container">
+            <canvas id="genderChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>💼 Average Income by Department</h3>
+        <div class="chart-container">
+            <canvas id="incomeChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card full-chart">
+        <h3>⭐ Job Satisfaction by Department</h3>
+        <div class="chart-container">
+            <canvas id="satisfactionChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card full-chart">
+        <h3>📊 Employees by Job Role</h3>
+        <div class="chart-container">
+            <canvas id="jobRoleChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>⏰ Overtime Distribution</h3>
+        <div class="chart-container">
+            <canvas id="overtimeChart"></canvas>
+        </div>
+    </div>
+
+    <div class="chart-card">
+        <h3>📈 Age Distribution</h3>
+        <div class="chart-container">
+            <canvas id="ageChart"></canvas>
+        </div>
+    </div>
+
+</div>
+
+<div class="table-card">
+
+    <div class="table-header">
+        <div>
+            <h3>🧾 Employee Records</h3>
+            <p style="color:#6B7280; font-size:13px; margin-top:5px;">
+                Detailed workforce information
+            </p>
+        </div>
+
+        <div id="recordCount"
+             style="background:#F3F6FA; padding:8px 14px; border-radius:20px; font-size:13px;">
+        </div>
+    </div>
+
+    <div class="table-wrapper">
+        <table>
+
+            <thead>
+                <tr>
+                    <th>Employee ID</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Department</th>
+                    <th>Job Role</th>
+                    <th>Monthly Income</th>
+                    <th>Years at Company</th>
+                    <th>Job Satisfaction</th>
+                    <th>Overtime</th>
+                    <th>Attrition</th>
+                </tr>
+            </thead>
+
+            <tbody id="employeeTableBody"></tbody>
+
+        </table>
+    </div>
+</div>
+
+<div class="footer">
+    👥 HR Analytics Dashboard | Built with Python, Pandas, HTML, CSS & Chart.js
+</div>
+
+</div>
+
+<script>
+
+const originalData = [{"Employee_ID":"EMP1001","Age":29,"Gender":"Female","Marital_Status":"Single","Education_Field":"Technical Degree","Department":"Sales","Job_Role":"Sales Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":3,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":1,"OverTime":"Yes","Distance_From_Home_KM":17,"Job_Satisfaction":1,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1002","Age":36,"Gender":"Female","Marital_Status":"Single","Education_Field":"Life Sciences","Department":"Finance","Job_Role":"Finance Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":5,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":2,"Years_With_Current_Manager":2,"OverTime":"Yes","Distance_From_Home_KM":13,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1003","Age":51,"Gender":"Female","Marital_Status":"Single","Education_Field":"Marketing","Department":"IT","Job_Role":"Software Developer","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":18,"Years_At_Company":11,"Years_In_Current_Role":9,"Years_Since_Last_Promotion":3,"Years_With_Current_Manager":11,"OverTime":"No","Distance_From_Home_KM":3,"Job_Satisfaction":2,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1004","Age":32,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Medical","Department":"Research & Development","Job_Role":"Lab Technician","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":4,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":21,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1005","Age":24,"Gender":"Female","Marital_Status":"Single","Education_Field":"Human Resources","Department":"Research & Development","Job_Role":"Lab Technician","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":1,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":1,"OverTime":"Yes","Distance_From_Home_KM":5,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1006","Age":47,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Life Sciences","Department":"Research & Development","Job_Role":"Research Scientist","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":15,"Years_At_Company":2,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":13,"Job_Satisfaction":4,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1007","Age":29,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Other","Department":"Marketing","Job_Role":"Marketing Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":25,"Job_Satisfaction":2,"Work_Life_Balance":1,"Performance_Rating":4,"Attrition":"Yes"},{"Employee_ID":"EMP1008","Age":54,"Gender":"Male","Marital_Status":"Married","Education_Field":"Life Sciences","Department":"IT","Job_Role":"Software Developer","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":10,"Years_At_Company":8,"Years_In_Current_Role":8,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":5,"OverTime":"No","Distance_From_Home_KM":29,"Job_Satisfaction":3,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1009","Age":27,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Marketing","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":2,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":7,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1010","Age":50,"Gender":"Male","Marital_Status":"Single","Education_Field":"Marketing","Department":"IT","Job_Role":"Data Analyst","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":14,"Years_At_Company":1,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":21,"Job_Satisfaction":1,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1011","Age":26,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Other","Department":"IT","Job_Role":"Software Developer","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":3,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":1,"OverTime":"Yes","Distance_From_Home_KM":4,"Job_Satisfaction":4,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1012","Age":25,"Gender":"Male","Marital_Status":"Single","Education_Field":"Life Sciences","Department":"Marketing","Job_Role":"Marketing Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":6,"Years_At_Company":5,"Years_In_Current_Role":2,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":1,"OverTime":"No","Distance_From_Home_KM":14,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1013","Age":50,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Marketing","Department":"IT","Job_Role":"Software Developer","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":0,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":13,"Job_Satisfaction":1,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1014","Age":51,"Gender":"Female","Marital_Status":"Single","Education_Field":"Medical","Department":"Research & Development","Job_Role":"Lab Technician","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":12,"Years_At_Company":4,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":4,"OverTime":"No","Distance_From_Home_KM":2,"Job_Satisfaction":1,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1015","Age":25,"Gender":"Male","Marital_Status":"Single","Education_Field":"Medical","Department":"IT","Job_Role":"Software Developer","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":1,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":14,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1016","Age":38,"Gender":"Female","Marital_Status":"Married","Education_Field":"Medical","Department":"Finance","Job_Role":"Financial Analyst","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":10,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":5,"Job_Satisfaction":3,"Work_Life_Balance":1,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1017","Age":50,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Medical","Department":"IT","Job_Role":"IT Support Specialist","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":0,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":5,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1018","Age":38,"Gender":"Female","Marital_Status":"Single","Education_Field":"Life Sciences","Department":"IT","Job_Role":"Data Analyst","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":2,"Years_At_Company":2,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":9,"Job_Satisfaction":2,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1019","Age":29,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Life Sciences","Department":"Sales","Job_Role":"Sales Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":0,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":30,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1020","Age":44,"Gender":"Male","Marital_Status":"Single","Education_Field":"Technical Degree","Department":"IT","Job_Role":"Data Analyst","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":1,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":14,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1021","Age":24,"Gender":"Male","Marital_Status":"Married","Education_Field":"Other","Department":"Finance","Job_Role":"Financial Analyst","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":2,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":28,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1022","Age":56,"Gender":"Male","Marital_Status":"Married","Education_Field":"Marketing","Department":"Research & Development","Job_Role":"Research Scientist","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":11,"Years_At_Company":9,"Years_In_Current_Role":4,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":1,"OverTime":"No","Distance_From_Home_KM":11,"Job_Satisfaction":4,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1023","Age":24,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Marketing","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":6,"Years_At_Company":4,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":22,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1024","Age":47,"Gender":"Male","Marital_Status":"Single","Education_Field":"Human Resources","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":13,"Years_At_Company":10,"Years_In_Current_Role":6,"Years_Since_Last_Promotion":5,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":27,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1025","Age":42,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Life Sciences","Department":"Finance","Job_Role":"Accountant","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":6,"Years_At_Company":4,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":25,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1026","Age":24,"Gender":"Male","Marital_Status":"Married","Education_Field":"Other","Department":"Human Resources","Job_Role":"Recruiter","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":3,"Years_At_Company":1,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":1,"OverTime":"No","Distance_From_Home_KM":28,"Job_Satisfaction":1,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1027","Age":55,"Gender":"Male","Marital_Status":"Single","Education_Field":"Marketing","Department":"Finance","Job_Role":"Financial Analyst","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":29,"Years_At_Company":4,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":2,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":30,"Job_Satisfaction":4,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1028","Age":37,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Medical","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":4,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":18,"Job_Satisfaction":1,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1029","Age":35,"Gender":"Female","Marital_Status":"Married","Education_Field":"Marketing","Department":"Sales","Job_Role":"Sales Representative","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":17,"Years_At_Company":14,"Years_In_Current_Role":6,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":19,"Job_Satisfaction":1,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1030","Age":46,"Gender":"Male","Marital_Status":"Married","Education_Field":"Technical Degree","Department":"Finance","Job_Role":"Finance Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":4,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":3,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":27,"Job_Satisfaction":4,"Work_Life_Balance":2,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1031","Age":58,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Marketing","Job_Role":"Marketing Executive","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":27,"Years_At_Company":4,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":11,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1032","Age":38,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Sales","Job_Role":"Sales Representative","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":17,"Years_At_Company":1,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":8,"Job_Satisfaction":2,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1033","Age":29,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Life Sciences","Department":"IT","Job_Role":"Software Developer","Job_Level":5,"Monthly_Income":30000,"Total_Working_Years":4,"Years_At_Company":2,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":30,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1034","Age":37,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Marketing","Department":"Sales","Job_Role":"Sales Manager","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":19,"Years_At_Company":3,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":11,"Job_Satisfaction":1,"Work_Life_Balance":4,"Performance_Rating":4,"Attrition":"Yes"},{"Employee_ID":"EMP1035","Age":51,"Gender":"Female","Marital_Status":"Single","Education_Field":"Technical Degree","Department":"Marketing","Job_Role":"Marketing Executive","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":33,"Years_At_Company":20,"Years_In_Current_Role":8,"Years_Since_Last_Promotion":8,"Years_With_Current_Manager":15,"OverTime":"Yes","Distance_From_Home_KM":28,"Job_Satisfaction":2,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1036","Age":58,"Gender":"Female","Marital_Status":"Married","Education_Field":"Medical","Department":"IT","Job_Role":"IT Support Specialist","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":1,"Years_At_Company":1,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":1,"OverTime":"No","Distance_From_Home_KM":29,"Job_Satisfaction":3,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1037","Age":48,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Finance","Job_Role":"Finance Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":15,"Years_At_Company":15,"Years_In_Current_Role":14,"Years_Since_Last_Promotion":12,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":8,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1038","Age":57,"Gender":"Female","Marital_Status":"Married","Education_Field":"Other","Department":"Research & Development","Job_Role":"Lab Technician","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":19,"Years_At_Company":8,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":23,"Job_Satisfaction":2,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1039","Age":55,"Gender":"Male","Marital_Status":"Single","Education_Field":"Technical Degree","Department":"IT","Job_Role":"Data Analyst","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":18,"Years_At_Company":7,"Years_In_Current_Role":5,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":4,"OverTime":"Yes","Distance_From_Home_KM":2,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1040","Age":28,"Gender":"Female","Marital_Status":"Married","Education_Field":"Life Sciences","Department":"Sales","Job_Role":"Sales Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":7,"Years_In_Current_Role":5,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":3,"Job_Satisfaction":4,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1041","Age":31,"Gender":"Female","Marital_Status":"Single","Education_Field":"Other","Department":"Human Resources","Job_Role":"HR Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":3,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":19,"Job_Satisfaction":4,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1042","Age":28,"Gender":"Male","Marital_Status":"Married","Education_Field":"Marketing","Department":"Human Resources","Job_Role":"HR Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":10,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":15,"Job_Satisfaction":4,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1043","Age":51,"Gender":"Male","Marital_Status":"Married","Education_Field":"Human Resources","Department":"Sales","Job_Role":"Sales Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":12,"Years_At_Company":6,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":5,"OverTime":"No","Distance_From_Home_KM":3,"Job_Satisfaction":1,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1044","Age":40,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Medical","Department":"Finance","Job_Role":"Financial Analyst","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":9,"Years_At_Company":6,"Years_In_Current_Role":2,"Years_Since_Last_Promotion":2,"Years_With_Current_Manager":4,"OverTime":"No","Distance_From_Home_KM":29,"Job_Satisfaction":4,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1045","Age":58,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Marketing","Department":"IT","Job_Role":"Software Developer","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":2,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":27,"Job_Satisfaction":4,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1046","Age":28,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Human Resources","Job_Role":"Recruiter","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":4,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":25,"Job_Satisfaction":4,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1047","Age":25,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Medical","Department":"Human Resources","Job_Role":"HR Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":7,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":4,"OverTime":"No","Distance_From_Home_KM":23,"Job_Satisfaction":4,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1048","Age":32,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Research & Development","Job_Role":"R&D Manager","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":6,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":23,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1049","Age":37,"Gender":"Male","Marital_Status":"Married","Education_Field":"Human Resources","Department":"Finance","Job_Role":"Finance Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":6,"Years_At_Company":4,"Years_In_Current_Role":4,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":26,"Job_Satisfaction":3,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1050","Age":53,"Gender":"Female","Marital_Status":"Married","Education_Field":"Marketing","Department":"Human Resources","Job_Role":"Recruiter","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":21,"Years_At_Company":17,"Years_In_Current_Role":17,"Years_Since_Last_Promotion":12,"Years_With_Current_Manager":14,"OverTime":"No","Distance_From_Home_KM":8,"Job_Satisfaction":4,"Work_Life_Balance":2,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1051","Age":52,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Other","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":9,"Years_At_Company":7,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":5,"OverTime":"Yes","Distance_From_Home_KM":30,"Job_Satisfaction":4,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1052","Age":31,"Gender":"Female","Marital_Status":"Married","Education_Field":"Other","Department":"Sales","Job_Role":"Sales Representative","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":9,"Years_At_Company":6,"Years_In_Current_Role":5,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":6,"OverTime":"No","Distance_From_Home_KM":11,"Job_Satisfaction":4,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1053","Age":40,"Gender":"Male","Marital_Status":"Married","Education_Field":"Human Resources","Department":"Human Resources","Job_Role":"HR Manager","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":3,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":2,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1054","Age":48,"Gender":"Male","Marital_Status":"Single","Education_Field":"Technical Degree","Department":"IT","Job_Role":"IT Support Specialist","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":21,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1055","Age":40,"Gender":"Male","Marital_Status":"Single","Education_Field":"Technical Degree","Department":"Marketing","Job_Role":"Marketing Manager","Job_Level":5,"Monthly_Income":30000,"Total_Working_Years":14,"Years_At_Company":5,"Years_In_Current_Role":4,"Years_Since_Last_Promotion":2,"Years_With_Current_Manager":5,"OverTime":"No","Distance_From_Home_KM":10,"Job_Satisfaction":2,"Work_Life_Balance":4,"Performance_Rating":4,"Attrition":"Yes"},{"Employee_ID":"EMP1056","Age":58,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Marketing","Department":"Research & Development","Job_Role":"R&D Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":18,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":24,"Job_Satisfaction":4,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1057","Age":36,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Medical","Department":"Marketing","Job_Role":"Marketing Executive","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":4,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":3,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1058","Age":56,"Gender":"Female","Marital_Status":"Single","Education_Field":"Marketing","Department":"Research & Development","Job_Role":"R&D Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":16,"Years_At_Company":15,"Years_In_Current_Role":9,"Years_Since_Last_Promotion":5,"Years_With_Current_Manager":3,"OverTime":"Yes","Distance_From_Home_KM":8,"Job_Satisfaction":4,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1059","Age":56,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Sales","Job_Role":"Sales Representative","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":16,"Years_At_Company":12,"Years_In_Current_Role":10,"Years_Since_Last_Promotion":5,"Years_With_Current_Manager":1,"OverTime":"Yes","Distance_From_Home_KM":29,"Job_Satisfaction":3,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1060","Age":41,"Gender":"Male","Marital_Status":"Single","Education_Field":"Technical Degree","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":1,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":15,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1061","Age":28,"Gender":"Female","Marital_Status":"Married","Education_Field":"Life Sciences","Department":"Finance","Job_Role":"Finance Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":0,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":4,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1062","Age":51,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Medical","Department":"Sales","Job_Role":"Sales Manager","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":1,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":25,"Job_Satisfaction":2,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1063","Age":22,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Human Resources","Department":"Research & Development","Job_Role":"Research Scientist","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":2,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":1,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1064","Age":29,"Gender":"Female","Marital_Status":"Married","Education_Field":"Technical Degree","Department":"Marketing","Job_Role":"Marketing Executive","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":4,"Years_In_Current_Role":4,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":30,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1065","Age":47,"Gender":"Male","Marital_Status":"Married","Education_Field":"Technical Degree","Department":"Finance","Job_Role":"Finance Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":22,"Years_At_Company":14,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":5,"OverTime":"Yes","Distance_From_Home_KM":20,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1066","Age":54,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Marketing","Department":"IT","Job_Role":"Data Analyst","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":3,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":3,"Years_With_Current_Manager":1,"OverTime":"No","Distance_From_Home_KM":24,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1067","Age":31,"Gender":"Male","Marital_Status":"Single","Education_Field":"Other","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":13,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":18,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1068","Age":49,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Marketing","Job_Role":"Marketing Executive","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":19,"Years_At_Company":11,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":12,"Job_Satisfaction":3,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1069","Age":57,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Life Sciences","Department":"IT","Job_Role":"IT Support Specialist","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":17,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":28,"Job_Satisfaction":2,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1070","Age":27,"Gender":"Male","Marital_Status":"Married","Education_Field":"Life Sciences","Department":"Marketing","Job_Role":"Marketing Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":6,"Years_At_Company":3,"Years_In_Current_Role":2,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":19,"Job_Satisfaction":1,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1071","Age":27,"Gender":"Female","Marital_Status":"Married","Education_Field":"Medical","Department":"Research & Development","Job_Role":"Lab Technician","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":9,"Years_At_Company":7,"Years_In_Current_Role":6,"Years_Since_Last_Promotion":2,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":4,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1072","Age":47,"Gender":"Male","Marital_Status":"Single","Education_Field":"Human Resources","Department":"IT","Job_Role":"Software Developer","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":9,"Years_At_Company":3,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":14,"Job_Satisfaction":2,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1073","Age":57,"Gender":"Male","Marital_Status":"Married","Education_Field":"Marketing","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":2,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":13,"Job_Satisfaction":4,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1074","Age":32,"Gender":"Female","Marital_Status":"Single","Education_Field":"Life Sciences","Department":"IT","Job_Role":"Data Analyst","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":6,"Years_At_Company":6,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":3,"OverTime":"Yes","Distance_From_Home_KM":28,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1075","Age":54,"Gender":"Male","Marital_Status":"Married","Education_Field":"Technical Degree","Department":"Marketing","Job_Role":"Marketing Executive","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":22,"Years_At_Company":20,"Years_In_Current_Role":4,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":3,"OverTime":"Yes","Distance_From_Home_KM":5,"Job_Satisfaction":1,"Work_Life_Balance":2,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1076","Age":58,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"IT","Job_Role":"Data Analyst","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":20,"Years_At_Company":4,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":19,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1077","Age":24,"Gender":"Female","Marital_Status":"Single","Education_Field":"Marketing","Department":"Sales","Job_Role":"Sales Representative","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":0,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":11,"Job_Satisfaction":4,"Work_Life_Balance":2,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1078","Age":27,"Gender":"Male","Marital_Status":"Single","Education_Field":"Life Sciences","Department":"IT","Job_Role":"IT Support Specialist","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":3,"Years_At_Company":3,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":25,"Job_Satisfaction":3,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1079","Age":43,"Gender":"Female","Marital_Status":"Married","Education_Field":"Marketing","Department":"Sales","Job_Role":"Sales Manager","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":8,"Years_At_Company":2,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":21,"Job_Satisfaction":4,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1080","Age":57,"Gender":"Female","Marital_Status":"Single","Education_Field":"Medical","Department":"Finance","Job_Role":"Finance Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":33,"Years_At_Company":2,"Years_In_Current_Role":2,"Years_Since_Last_Promotion":2,"Years_With_Current_Manager":1,"OverTime":"No","Distance_From_Home_KM":6,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1081","Age":30,"Gender":"Female","Marital_Status":"Single","Education_Field":"Medical","Department":"Human Resources","Job_Role":"HR Executive","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":8,"Years_At_Company":8,"Years_In_Current_Role":8,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":5,"OverTime":"No","Distance_From_Home_KM":5,"Job_Satisfaction":2,"Work_Life_Balance":2,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1082","Age":50,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Other","Department":"Sales","Job_Role":"Sales Representative","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":15,"Years_At_Company":14,"Years_In_Current_Role":9,"Years_Since_Last_Promotion":4,"Years_With_Current_Manager":12,"OverTime":"Yes","Distance_From_Home_KM":8,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":4,"Attrition":"Yes"},{"Employee_ID":"EMP1083","Age":58,"Gender":"Female","Marital_Status":"Married","Education_Field":"Human Resources","Department":"Finance","Job_Role":"Accountant","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":32,"Years_At_Company":16,"Years_In_Current_Role":13,"Years_Since_Last_Promotion":2,"Years_With_Current_Manager":6,"OverTime":"No","Distance_From_Home_KM":2,"Job_Satisfaction":4,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1084","Age":29,"Gender":"Male","Marital_Status":"Married","Education_Field":"Life Sciences","Department":"Research & Development","Job_Role":"Research Scientist","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":2,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":14,"Job_Satisfaction":1,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1085","Age":45,"Gender":"Female","Marital_Status":"Single","Education_Field":"Life Sciences","Department":"Human Resources","Job_Role":"HR Executive","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":26,"Years_At_Company":20,"Years_In_Current_Role":10,"Years_Since_Last_Promotion":2,"Years_With_Current_Manager":4,"OverTime":"No","Distance_From_Home_KM":5,"Job_Satisfaction":4,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1086","Age":38,"Gender":"Female","Marital_Status":"Single","Education_Field":"Other","Department":"Human Resources","Job_Role":"HR Executive","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":9,"Years_At_Company":3,"Years_In_Current_Role":2,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":27,"Job_Satisfaction":4,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1087","Age":31,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Research & Development","Job_Role":"Lab Technician","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":1,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":17,"Job_Satisfaction":1,"Work_Life_Balance":4,"Performance_Rating":4,"Attrition":"Yes"},{"Employee_ID":"EMP1088","Age":45,"Gender":"Male","Marital_Status":"Married","Education_Field":"Other","Department":"Research & Development","Job_Role":"R&D Manager","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":25,"Years_At_Company":2,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":24,"Job_Satisfaction":3,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1089","Age":33,"Gender":"Female","Marital_Status":"Divorced","Education_Field":"Human Resources","Department":"Marketing","Job_Role":"Digital Marketer","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":29,"Job_Satisfaction":1,"Work_Life_Balance":3,"Performance_Rating":4,"Attrition":"No"},{"Employee_ID":"EMP1090","Age":52,"Gender":"Male","Marital_Status":"Married","Education_Field":"Other","Department":"Research & Development","Job_Role":"Research Scientist","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":22,"Years_At_Company":1,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":24,"Job_Satisfaction":4,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1091","Age":53,"Gender":"Female","Marital_Status":"Single","Education_Field":"Medical","Department":"Research & Development","Job_Role":"R&D Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":27,"Years_At_Company":2,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":2,"OverTime":"Yes","Distance_From_Home_KM":22,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1092","Age":50,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Technical Degree","Department":"Research & Development","Job_Role":"Lab Technician","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":22,"Years_At_Company":19,"Years_In_Current_Role":13,"Years_Since_Last_Promotion":4,"Years_With_Current_Manager":1,"OverTime":"No","Distance_From_Home_KM":26,"Job_Satisfaction":2,"Work_Life_Balance":1,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1093","Age":24,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Other","Department":"Human Resources","Job_Role":"HR Executive","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":2,"Years_At_Company":1,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"No","Distance_From_Home_KM":25,"Job_Satisfaction":1,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1094","Age":39,"Gender":"Male","Marital_Status":"Divorced","Education_Field":"Life Sciences","Department":"Human Resources","Job_Role":"HR Executive","Job_Level":3,"Monthly_Income":30000,"Total_Working_Years":5,"Years_At_Company":3,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":2,"OverTime":"Yes","Distance_From_Home_KM":20,"Job_Satisfaction":3,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1095","Age":50,"Gender":"Female","Marital_Status":"Single","Education_Field":"Medical","Department":"Human Resources","Job_Role":"HR Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":20,"Years_At_Company":11,"Years_In_Current_Role":11,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":8,"OverTime":"No","Distance_From_Home_KM":23,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"Yes"},{"Employee_ID":"EMP1096","Age":30,"Gender":"Male","Marital_Status":"Married","Education_Field":"Life Sciences","Department":"Human Resources","Job_Role":"Recruiter","Job_Level":4,"Monthly_Income":30000,"Total_Working_Years":8,"Years_At_Company":5,"Years_In_Current_Role":3,"Years_Since_Last_Promotion":1,"Years_With_Current_Manager":4,"OverTime":"No","Distance_From_Home_KM":23,"Job_Satisfaction":4,"Work_Life_Balance":4,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1097","Age":30,"Gender":"Male","Marital_Status":"Married","Education_Field":"Other","Department":"Research & Development","Job_Role":"R&D Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":7,"Years_At_Company":5,"Years_In_Current_Role":1,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":1,"OverTime":"No","Distance_From_Home_KM":17,"Job_Satisfaction":2,"Work_Life_Balance":3,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1098","Age":36,"Gender":"Female","Marital_Status":"Single","Education_Field":"Human Resources","Department":"Research & Development","Job_Role":"R&D Manager","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":8,"Years_At_Company":3,"Years_In_Current_Role":2,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":2,"OverTime":"No","Distance_From_Home_KM":6,"Job_Satisfaction":2,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1099","Age":43,"Gender":"Male","Marital_Status":"Single","Education_Field":"Marketing","Department":"IT","Job_Role":"Software Developer","Job_Level":2,"Monthly_Income":30000,"Total_Working_Years":1,"Years_At_Company":1,"Years_In_Current_Role":0,"Years_Since_Last_Promotion":0,"Years_With_Current_Manager":0,"OverTime":"Yes","Distance_From_Home_KM":10,"Job_Satisfaction":4,"Work_Life_Balance":2,"Performance_Rating":3,"Attrition":"No"},{"Employee_ID":"EMP1100","Age":51,"Gender":"Male","Marital_Status":"Single","Education_Field":"Marketing","Department":"Sales","Job_Role":"Sales Manager","Job_Level":1,"Monthly_Income":30000,"Total_Working_Years":28,"Years_At_Company":13,"Years_In_Current_Role":7,"Years_Since_Last_Promotion":7,"Years_With_Current_Manager":3,"OverTime":"No","Distance_From_Home_KM":23,"Job_Satisfaction":3,"Work_Life_Balance":3,"Performance_Rating":4,"Attrition":"Yes"}];
+
+let charts = [];
+
+function getUniqueValues(data, column) {
+    return [...new Set(
+        data
+            .map(item => item[column])
+            .filter(value => value !== null && value !== undefined)
+    )].sort();
+}
+
+function populateFilter(id, column) {
+
+    const select = document.getElementById(id);
+
+    const values = getUniqueValues(
+        originalData,
+        column
+    );
+
+    values.forEach(value => {
+
+        const option = document.createElement("option");
+
+        option.value = value;
+        option.textContent = value;
+
+        select.appendChild(option);
+
+    });
+}
+
+populateFilter("departmentFilter", "Department");
+populateFilter("roleFilter", "Job_Role");
+populateFilter("genderFilter", "Gender");
+populateFilter("overtimeFilter", "OverTime");
+
+function getFilteredData() {
+
+    const department =
+        document.getElementById("departmentFilter").value;
+
+    const role =
+        document.getElementById("roleFilter").value;
+
+    const gender =
+        document.getElementById("genderFilter").value;
+
+    const attrition =
+        document.getElementById("attritionFilter").value;
+
+    const overtime =
+        document.getElementById("overtimeFilter").value;
+
+    return originalData.filter(item => {
+
+        return (
+            (department === "All" || item.Department === department) &&
+            (role === "All" || item.Job_Role === role) &&
+            (gender === "All" || item.Gender === gender) &&
+            (attrition === "All" || item.Attrition === attrition) &&
+            (overtime === "All" || item.OverTime === overtime)
+        );
+
+    });
+}
+
+function destroyCharts() {
+
+    charts.forEach(chart => chart.destroy());
+
+    charts = [];
+
+}
+
+function countValues(data, column) {
+
+    const result = {};
+
+    data.forEach(item => {
+
+        const value = item[column];
+
+        result[value] = (result[value] || 0) + 1;
+
+    });
+
+    return result;
+
+}
+
+function averageByCategory(data, category, valueColumn) {
+
+    const groups = {};
+
+    data.forEach(item => {
+
+        const key = item[category];
+
+        if (!groups[key]) {
+            groups[key] = [];
+        }
+
+        groups[key].push(
+            Number(item[valueColumn]) || 0
+        );
+
+    });
+
+    const result = {};
+
+    Object.keys(groups).forEach(key => {
+
+        const values = groups[key];
+
+        result[key] =
+            values.reduce((a, b) => a + b, 0) /
+            values.length;
+
+    });
+
+    return result;
+
+}
+
+function updateKPIs(data) {
+
+    const totalEmployees = data.length;
+
+    const attritionEmployees =
+        data.filter(item => item.Attrition === "Yes").length;
+
+    const attritionRate =
+        totalEmployees > 0
+        ? (attritionEmployees / totalEmployees) * 100
+        : 0;
+
+    const avgIncome =
+        totalEmployees > 0
+        ? data.reduce(
+            (sum, item) =>
+                sum + (Number(item.Monthly_Income) || 0),
+            0
+          ) / totalEmployees
+        : 0;
+
+    const avgSatisfaction =
+        totalEmployees > 0
+        ? data.reduce(
+            (sum, item) =>
+                sum + (Number(item.Job_Satisfaction) || 0),
+            0
+          ) / totalEmployees
+        : 0;
+
+    document.getElementById("totalEmployees").textContent =
+        totalEmployees.toLocaleString();
+
+    document.getElementById("attritionRate").textContent =
+        attritionRate.toFixed(1) + "%";
+
+    document.getElementById("avgIncome").textContent =
+        "PKR " + Math.round(avgIncome).toLocaleString();
+
+    document.getElementById("avgSatisfaction").textContent =
+        avgSatisfaction.toFixed(2) + " / 4";
+
+}
+
+function createCharts(data) {
+
+    destroyCharts();
+
+    const departmentData =
+        countValues(data, "Department");
+
+    charts.push(
+        new Chart(
+            document.getElementById("departmentChart"),
+            {
+                type: "bar",
+                data: {
+                    labels: Object.keys(departmentData),
+                    datasets: [{
+                        label: "Employees",
+                        data: Object.values(departmentData),
+                        backgroundColor: "#2B5876",
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        )
+    );
+
+    const attritionData =
+        countValues(data, "Attrition");
+
+    charts.push(
+        new Chart(
+            document.getElementById("attritionChart"),
+            {
+                type: "doughnut",
+                data: {
+                    labels: Object.keys(attritionData),
+                    datasets: [{
+                        data: Object.values(attritionData),
+                        backgroundColor: [
+                            "#D64545",
+                            "#2E8B57"
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            }
+        )
+    );
+
+    const genderData =
+        countValues(data, "Gender");
+
+    charts.push(
+        new Chart(
+            document.getElementById("genderChart"),
+            {
+                type: "pie",
+                data: {
+                    labels: Object.keys(genderData),
+                    datasets: [{
+                        data: Object.values(genderData),
+                        backgroundColor: [
+                            "#6C63FF",
+                            "#FF8FAB"
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            }
+        )
+    );
+
+    const incomeData =
+        averageByCategory(
+            data,
+            "Department",
+            "Monthly_Income"
+        );
+
+    charts.push(
+        new Chart(
+            document.getElementById("incomeChart"),
+            {
+                type: "bar",
+                data: {
+                    labels: Object.keys(incomeData),
+                    datasets: [{
+                        label: "Average Income",
+                        data: Object.values(incomeData),
+                        backgroundColor: "#27AE60",
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        )
+    );
+
+    const satisfactionData =
+        averageByCategory(
+            data,
+            "Department",
+            "Job_Satisfaction"
+        );
+
+    charts.push(
+        new Chart(
+            document.getElementById("satisfactionChart"),
+            {
+                type: "bar",
+                data: {
+                    labels: Object.keys(satisfactionData),
+                    datasets: [{
+                        label: "Job Satisfaction",
+                        data: Object.values(satisfactionData),
+                        backgroundColor: "#8E44AD",
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 4
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        )
+    );
+
+    const roleData =
+        countValues(data, "Job_Role");
+
+    charts.push(
+        new Chart(
+            document.getElementById("jobRoleChart"),
+            {
+                type: "bar",
+                data: {
+                    labels: Object.keys(roleData),
+                    datasets: [{
+                        label: "Employees",
+                        data: Object.values(roleData),
+                        backgroundColor: "#F39C12",
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    indexAxis: "y",
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        )
+    );
+
+    const overtimeData =
+        countValues(data, "OverTime");
+
+    charts.push(
+        new Chart(
+            document.getElementById("overtimeChart"),
+            {
+                type: "doughnut",
+                data: {
+                    labels: Object.keys(overtimeData),
+                    datasets: [{
+                        data: Object.values(overtimeData),
+                        backgroundColor: [
+                            "#3498DB",
+                            "#E67E22"
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: "bottom"
+                        }
+                    }
+                }
+            }
+        )
+    );
+
+    const ageGroups = {
+        "20-29": 0,
+        "30-39": 0,
+        "40-49": 0,
+        "50+": 0
+    };
+
+    data.forEach(item => {
+
+        const age = Number(item.Age);
+
+        if (age >= 20 && age <= 29) {
+            ageGroups["20-29"]++;
+        }
+        else if (age >= 30 && age <= 39) {
+            ageGroups["30-39"]++;
+        }
+        else if (age >= 40 && age <= 49) {
+            ageGroups["40-49"]++;
+        }
+        else if (age >= 50) {
+            ageGroups["50+"]++;
+        }
+
+    });
+
+    charts.push(
+        new Chart(
+            document.getElementById("ageChart"),
+            {
+                type: "bar",
+                data: {
+                    labels: Object.keys(ageGroups),
+                    datasets: [{
+                        label: "Employees",
+                        data: Object.values(ageGroups),
+                        backgroundColor: "#16A085",
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            }
+        )
+    );
+
+}
+
+function updateTable(data) {
+
+    const tbody =
+        document.getElementById("employeeTableBody");
+
+    tbody.innerHTML = "";
+
+    data.forEach(item => {
+
+        const row =
+            document.createElement("tr");
+
+        const attritionClass =
+            item.Attrition === "Yes"
+            ? "attrition-yes"
+            : "attrition-no";
+
+        row.innerHTML =
+            "<td>" + (item.Employee_ID || "-") + "</td>" +
+            "<td>" + (item.Age || "-") + "</td>" +
+            "<td>" + (item.Gender || "-") + "</td>" +
+            "<td>" + (item.Department || "-") + "</td>" +
+            "<td>" + (item.Job_Role || "-") + "</td>" +
+            "<td>PKR " +
+            Number(item.Monthly_Income || 0).toLocaleString() +
+            "</td>" +
+            "<td>" + (item.Years_At_Company || 0) + "</td>" +
+            "<td>⭐ " + (item.Job_Satisfaction || "-") + "</td>" +
+            "<td>" + (item.OverTime || "-") + "</td>" +
+            "<td><span class='badge " +
+            attritionClass +
+            "'>" +
+            (item.Attrition || "-") +
+            "</span></td>";
+
+        tbody.appendChild(row);
+
+    });
+
+    document.getElementById("recordCount").textContent =
+        data.length + " Employee Records";
+
+}
+
+function updateDashboard() {
+
+    const filteredData =
+        getFilteredData();
+
+    updateKPIs(filteredData);
+    createCharts(filteredData);
+    updateTable(filteredData);
+
+}
+
+document.getElementById("departmentFilter")
+    .addEventListener("change", updateDashboard);
+
+document.getElementById("roleFilter")
+    .addEventListener("change", updateDashboard);
+
+document.getElementById("genderFilter")
+    .addEventListener("change", updateDashboard);
+
+document.getElementById("attritionFilter")
+    .addEventListener("change", updateDashboard);
+
+document.getElementById("overtimeFilter")
+    .addEventListener("change", updateDashboard);
+
+function resetFilters() {
+
+    document.getElementById("departmentFilter").value = "All";
+    document.getElementById("roleFilter").value = "All";
+    document.getElementById("genderFilter").value = "All";
+    document.getElementById("attritionFilter").value = "All";
+    document.getElementById("overtimeFilter").value = "All";
+
+    updateDashboard();
+
+}
+
+updateDashboard();
+
+</script>
+
+</body>
+</html>
