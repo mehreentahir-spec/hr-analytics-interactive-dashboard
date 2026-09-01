@@ -1,0 +1,101 @@
+Employee_ID,Age,Gender,Marital_Status,Education_Field,Department,Job_Role,Job_Level,Monthly_Income,Total_Working_Years,Years_At_Company,Years_In_Current_Role,Years_Since_Last_Promotion,Years_With_Current_Manager,OverTime,Distance_From_Home_KM,Job_Satisfaction,Work_Life_Balance,Performance_Rating,Attrition
+EMP1001,29,Female,Single,Technical Degree,Sales,Sales Manager,1,30000,3,1,0,0,1,Yes,17,1,2,3,No
+EMP1002,36,Female,Single,Life Sciences,Finance,Finance Manager,1,30000,5,5,3,2,2,Yes,13,1,3,4,No
+EMP1003,51,Female,Single,Marketing,IT,Software Developer,1,30000,18,11,9,3,11,No,3,2,1,3,No
+EMP1004,32,Male,Divorced,Medical,Research & Development,Lab Technician,2,30000,4,0,0,0,0,No,21,2,3,4,No
+EMP1005,24,Female,Single,Human Resources,Research & Development,Lab Technician,4,30000,1,1,0,0,1,Yes,5,2,3,3,No
+EMP1006,47,Male,Divorced,Life Sciences,Research & Development,Research Scientist,2,30000,15,2,0,0,0,No,13,4,4,3,No
+EMP1007,29,Female,Divorced,Other,Marketing,Marketing Manager,2,30000,5,0,0,0,0,No,25,2,1,4,Yes
+EMP1008,54,Male,Married,Life Sciences,IT,Software Developer,2,30000,10,8,8,0,5,No,29,3,2,3,No
+EMP1009,27,Male,Divorced,Marketing,Marketing,Digital Marketer,2,30000,2,0,0,0,0,No,7,2,3,3,No
+EMP1010,50,Male,Single,Marketing,IT,Data Analyst,2,30000,14,1,1,0,0,Yes,21,1,2,3,Yes
+EMP1011,26,Female,Divorced,Other,IT,Software Developer,3,30000,7,3,1,1,1,Yes,4,4,3,3,No
+EMP1012,25,Male,Single,Life Sciences,Marketing,Marketing Manager,1,30000,6,5,2,0,1,No,14,2,3,3,No
+EMP1013,50,Male,Divorced,Marketing,IT,Software Developer,2,30000,0,0,0,0,0,Yes,13,1,2,3,No
+EMP1014,51,Female,Single,Medical,Research & Development,Lab Technician,3,30000,12,4,1,0,4,No,2,1,4,3,No
+EMP1015,25,Male,Single,Medical,IT,Software Developer,2,30000,1,0,0,0,0,No,14,3,3,3,No
+EMP1016,38,Female,Married,Medical,Finance,Financial Analyst,1,30000,10,1,0,0,0,No,5,3,1,4,No
+EMP1017,50,Female,Divorced,Medical,IT,IT Support Specialist,1,30000,0,0,0,0,0,No,5,3,3,3,No
+EMP1018,38,Female,Single,Life Sciences,IT,Data Analyst,1,30000,2,2,1,1,0,No,9,2,4,3,No
+EMP1019,29,Male,Divorced,Life Sciences,Sales,Sales Manager,1,30000,0,0,0,0,0,No,30,1,3,3,Yes
+EMP1020,44,Male,Single,Technical Degree,IT,Data Analyst,3,30000,5,1,1,0,0,No,14,2,3,3,No
+EMP1021,24,Male,Married,Other,Finance,Financial Analyst,3,30000,2,1,0,0,0,No,28,1,3,3,No
+EMP1022,56,Male,Married,Marketing,Research & Development,Research Scientist,2,30000,11,9,4,0,1,No,11,4,1,3,No
+EMP1023,24,Male,Divorced,Marketing,Marketing,Digital Marketer,1,30000,6,4,1,1,3,No,22,1,3,3,No
+EMP1024,47,Male,Single,Human Resources,Marketing,Digital Marketer,2,30000,13,10,6,5,2,No,27,1,3,3,No
+EMP1025,42,Female,Divorced,Life Sciences,Finance,Accountant,1,30000,6,4,3,1,0,Yes,25,2,3,3,Yes
+EMP1026,24,Male,Married,Other,Human Resources,Recruiter,1,30000,3,1,1,1,1,No,28,1,4,3,No
+EMP1027,55,Male,Single,Marketing,Finance,Financial Analyst,2,30000,29,4,3,2,3,No,30,4,2,3,No
+EMP1028,37,Female,Divorced,Medical,Marketing,Digital Marketer,1,30000,7,4,3,0,2,No,18,1,2,3,No
+EMP1029,35,Female,Married,Marketing,Sales,Sales Representative,3,30000,17,14,6,0,3,No,19,1,4,3,No
+EMP1030,46,Male,Married,Technical Degree,Finance,Finance Manager,2,30000,7,4,3,3,0,No,27,4,2,4,No
+EMP1031,58,Male,Divorced,Technical Degree,Marketing,Marketing Executive,1,30000,27,4,3,1,0,Yes,11,3,4,3,No
+EMP1032,38,Male,Divorced,Technical Degree,Sales,Sales Representative,3,30000,17,1,1,0,0,No,8,2,1,3,Yes
+EMP1033,29,Female,Divorced,Life Sciences,IT,Software Developer,5,30000,4,2,0,0,0,No,30,3,4,3,No
+EMP1034,37,Female,Divorced,Marketing,Sales,Sales Manager,3,30000,19,3,0,0,3,No,11,1,4,4,Yes
+EMP1035,51,Female,Single,Technical Degree,Marketing,Marketing Executive,2,30000,33,20,8,8,15,Yes,28,2,1,3,No
+EMP1036,58,Female,Married,Medical,IT,IT Support Specialist,1,30000,1,1,1,0,1,No,29,3,1,3,Yes
+EMP1037,48,Male,Divorced,Technical Degree,Finance,Finance Manager,1,30000,15,15,14,12,0,No,8,3,3,3,No
+EMP1038,57,Female,Married,Other,Research & Development,Lab Technician,1,30000,19,8,3,0,3,No,23,2,2,3,No
+EMP1039,55,Male,Single,Technical Degree,IT,Data Analyst,1,30000,18,7,5,1,4,Yes,2,1,3,3,Yes
+EMP1040,28,Female,Married,Life Sciences,Sales,Sales Manager,1,30000,7,7,5,1,0,Yes,3,4,4,3,No
+EMP1041,31,Female,Single,Other,Human Resources,HR Manager,2,30000,3,0,0,0,0,Yes,19,4,3,3,Yes
+EMP1042,28,Male,Married,Marketing,Human Resources,HR Manager,2,30000,10,1,0,0,0,Yes,15,4,3,3,Yes
+EMP1043,51,Male,Married,Human Resources,Sales,Sales Manager,1,30000,12,6,0,0,5,No,3,1,2,3,No
+EMP1044,40,Female,Divorced,Medical,Finance,Financial Analyst,2,30000,9,6,2,2,4,No,29,4,3,3,Yes
+EMP1045,58,Female,Divorced,Marketing,IT,Software Developer,1,30000,2,0,0,0,0,No,27,4,1,3,No
+EMP1046,28,Female,Divorced,Technical Degree,Human Resources,Recruiter,1,30000,7,4,3,0,3,No,25,4,1,3,No
+EMP1047,25,Female,Divorced,Medical,Human Resources,HR Manager,2,30000,7,7,0,0,4,No,23,4,1,3,No
+EMP1048,32,Male,Divorced,Technical Degree,Research & Development,R&D Manager,4,30000,6,0,0,0,0,No,23,3,3,3,No
+EMP1049,37,Male,Married,Human Resources,Finance,Finance Manager,1,30000,6,4,4,1,0,No,26,3,1,3,No
+EMP1050,53,Female,Married,Marketing,Human Resources,Recruiter,4,30000,21,17,17,12,14,No,8,4,2,4,No
+EMP1051,52,Female,Divorced,Other,Marketing,Digital Marketer,4,30000,9,7,0,0,5,Yes,30,4,1,3,No
+EMP1052,31,Female,Married,Other,Sales,Sales Representative,1,30000,9,6,5,0,6,No,11,4,1,3,No
+EMP1053,40,Male,Married,Human Resources,Human Resources,HR Manager,4,30000,3,0,0,0,0,No,2,3,3,3,Yes
+EMP1054,48,Male,Single,Technical Degree,IT,IT Support Specialist,4,30000,5,0,0,0,0,Yes,21,3,4,3,Yes
+EMP1055,40,Male,Single,Technical Degree,Marketing,Marketing Manager,5,30000,14,5,4,2,5,No,10,2,4,4,Yes
+EMP1056,58,Female,Divorced,Marketing,Research & Development,R&D Manager,2,30000,18,0,0,0,0,No,24,4,3,3,Yes
+EMP1057,36,Female,Divorced,Medical,Marketing,Marketing Executive,1,30000,4,0,0,0,0,No,3,3,3,3,Yes
+EMP1058,56,Female,Single,Marketing,Research & Development,R&D Manager,2,30000,16,15,9,5,3,Yes,8,4,3,3,No
+EMP1059,56,Female,Divorced,Technical Degree,Sales,Sales Representative,3,30000,16,12,10,5,1,Yes,29,3,2,3,No
+EMP1060,41,Male,Single,Technical Degree,Marketing,Digital Marketer,1,30000,1,0,0,0,0,Yes,15,3,4,3,No
+EMP1061,28,Female,Married,Life Sciences,Finance,Finance Manager,2,30000,0,0,0,0,0,No,4,3,3,3,No
+EMP1062,51,Male,Divorced,Medical,Sales,Sales Manager,3,30000,1,0,0,0,0,Yes,25,2,2,3,Yes
+EMP1063,22,Male,Divorced,Human Resources,Research & Development,Research Scientist,1,30000,2,0,0,0,0,No,1,2,3,3,No
+EMP1064,29,Female,Married,Technical Degree,Marketing,Marketing Executive,2,30000,5,4,4,0,3,No,30,3,4,3,Yes
+EMP1065,47,Male,Married,Technical Degree,Finance,Finance Manager,2,30000,22,14,1,0,5,Yes,20,3,4,4,No
+EMP1066,54,Male,Divorced,Marketing,IT,Data Analyst,2,30000,7,3,3,3,1,No,24,1,3,3,No
+EMP1067,31,Male,Single,Other,Marketing,Digital Marketer,3,30000,13,1,0,0,0,No,18,1,3,3,No
+EMP1068,49,Female,Divorced,Technical Degree,Marketing,Marketing Executive,3,30000,19,11,1,0,2,No,12,3,1,3,No
+EMP1069,57,Male,Divorced,Life Sciences,IT,IT Support Specialist,4,30000,17,0,0,0,0,Yes,28,2,4,3,No
+EMP1070,27,Male,Married,Life Sciences,Marketing,Marketing Manager,1,30000,6,3,2,0,2,No,19,1,1,3,No
+EMP1071,27,Female,Married,Medical,Research & Development,Lab Technician,3,30000,9,7,6,2,3,No,4,3,4,3,No
+EMP1072,47,Male,Single,Human Resources,IT,Software Developer,1,30000,9,3,1,1,2,No,14,2,2,3,No
+EMP1073,57,Male,Married,Marketing,Marketing,Digital Marketer,4,30000,2,1,0,0,0,No,13,4,3,3,Yes
+EMP1074,32,Female,Single,Life Sciences,IT,Data Analyst,2,30000,6,6,0,0,3,Yes,28,3,3,3,No
+EMP1075,54,Male,Married,Technical Degree,Marketing,Marketing Executive,1,30000,22,20,4,1,3,Yes,5,1,2,4,No
+EMP1076,58,Female,Divorced,Technical Degree,IT,Data Analyst,2,30000,20,4,3,0,3,No,19,1,3,3,No
+EMP1077,24,Female,Single,Marketing,Sales,Sales Representative,2,30000,5,0,0,0,0,No,11,4,2,4,No
+EMP1078,27,Male,Single,Life Sciences,IT,IT Support Specialist,2,30000,3,3,3,1,2,No,25,3,1,3,No
+EMP1079,43,Female,Married,Marketing,Sales,Sales Manager,3,30000,8,2,1,0,2,No,21,4,2,3,No
+EMP1080,57,Female,Single,Medical,Finance,Finance Manager,2,30000,33,2,2,2,1,No,6,2,3,4,No
+EMP1081,30,Female,Single,Medical,Human Resources,HR Executive,4,30000,8,8,8,0,5,No,5,2,2,4,No
+EMP1082,50,Female,Divorced,Other,Sales,Sales Representative,3,30000,15,14,9,4,12,Yes,8,3,4,4,Yes
+EMP1083,58,Female,Married,Human Resources,Finance,Accountant,3,30000,32,16,13,2,6,No,2,4,3,3,Yes
+EMP1084,29,Male,Married,Life Sciences,Research & Development,Research Scientist,3,30000,7,2,1,0,0,No,14,1,4,3,Yes
+EMP1085,45,Female,Single,Life Sciences,Human Resources,HR Executive,1,30000,26,20,10,2,4,No,5,4,4,3,No
+EMP1086,38,Female,Single,Other,Human Resources,HR Executive,1,30000,9,3,2,0,0,Yes,27,4,1,3,No
+EMP1087,31,Male,Divorced,Technical Degree,Research & Development,Lab Technician,2,30000,5,1,1,0,0,Yes,17,1,4,4,Yes
+EMP1088,45,Male,Married,Other,Research & Development,R&D Manager,3,30000,25,2,1,0,2,No,24,3,2,3,No
+EMP1089,33,Female,Divorced,Human Resources,Marketing,Digital Marketer,1,30000,5,1,0,0,0,No,29,1,3,4,No
+EMP1090,52,Male,Married,Other,Research & Development,Research Scientist,3,30000,22,1,1,1,0,No,24,4,4,3,Yes
+EMP1091,53,Female,Single,Medical,Research & Development,R&D Manager,1,30000,27,2,1,0,2,Yes,22,3,3,3,No
+EMP1092,50,Male,Divorced,Technical Degree,Research & Development,Lab Technician,1,30000,22,19,13,4,1,No,26,2,1,3,No
+EMP1093,24,Male,Divorced,Other,Human Resources,HR Executive,3,30000,2,1,1,0,0,No,25,1,2,3,No
+EMP1094,39,Male,Divorced,Life Sciences,Human Resources,HR Executive,3,30000,5,3,3,0,2,Yes,20,3,4,3,Yes
+EMP1095,50,Female,Single,Medical,Human Resources,HR Manager,2,30000,20,11,11,1,8,No,23,2,3,3,Yes
+EMP1096,30,Male,Married,Life Sciences,Human Resources,Recruiter,4,30000,8,5,3,1,4,No,23,4,4,3,No
+EMP1097,30,Male,Married,Other,Research & Development,R&D Manager,2,30000,7,5,1,0,1,No,17,2,3,3,No
+EMP1098,36,Female,Single,Human Resources,Research & Development,R&D Manager,2,30000,8,3,2,0,2,No,6,2,2,3,No
+EMP1099,43,Male,Single,Marketing,IT,Software Developer,2,30000,1,1,0,0,0,Yes,10,4,2,3,No
+EMP1100,51,Male,Single,Marketing,Sales,Sales Manager,1,30000,28,13,7,7,3,No,23,3,3,4,Yes
